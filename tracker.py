@@ -1,6 +1,7 @@
 # Reading Tracker - Week 2 (clean version)
 from logic import getStatus, progressPercent
 from storage import loadLibrary, saveLibrary
+from datetime import date
 DATA_FILE = "library.json"
 
 # ========================= ADDONS
@@ -22,6 +23,12 @@ def askSeriesNumber(library, prompt):
         print("No series with that number")
         return None
     return number - 1
+
+def titleExists(library, title):
+    for series in library:
+        if series["title"].lower() == title.lower():
+            return True
+        return False
 # =======================================
 
 # ==================== MENU FUNCTION
@@ -32,12 +39,16 @@ def showLibrary(library):
     for number, series in enumerate(library, start=1):
         percent = progressPercent(series["read"], series["total"])
         status = getStatus(series["read"], series["total"])
-        print(f"{number}. {series['title']} [{series['fmt']}] "f"{series['read']}/{series['total']} ({percent}%) - {status}")
+        last = series.get("last_read", "never")
+        print(f"{number}. {series['title']} [{series['fmt']}] "f"{series['read']}/{series['total']} ({percent}%) - {status}" f" - Last Read : {last}")
 
 def addSeries(library):
     title = input("Title: ").strip().title()
     if title == "":
         print("Title can't be empty.")
+        return
+    if titleExists(library, title):
+        print("That title is already in your library")
         return
     print("Format: 1) Manga  2) Novel  3) Comic")
     fmt = FORMATS.get(input("Pick 1-3: ").strip(), "Unknown")
@@ -52,6 +63,7 @@ def logProgress(library):
     amount = askInt("How many to add? ")
     series = library[index]
     series["read"] = min(series["read"] + amount, series["total"])
+    series["last_read"] = date.today.isoformat()
     print(f"Updated {series['title']}: {series['read']}/{series['total']}")
 
 def removeSeries(library):
@@ -60,7 +72,6 @@ def removeSeries(library):
         return
     removed = library.pop(index)
     print(f"Removed {removed['title']}")
-
 
 def showReading(library):
     print("\nCurrently reading:")
