@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Vagabond",
+    "fmt": "Manga",
+    "read": 12,
+    "total": 327
+  },
+  {
+    "title": "Dune",
+    "fmt": "Novel",
+    "read": 100,
+    "total": 600
+  },
+  {
+    "title": "Marvel Spider-Man",
+    "fmt": "Comic",
+    "read": 25,
+    "total": 250
+  }
+]
