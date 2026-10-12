@@ -1,17 +1,9 @@
 # Reading Tracker - Week 2 (clean version)
-import json
+from logic import getStatus, progressPercent
+from storage import loadLibrary, saveLibrary
 DATA_FILE = "library.json"
 
-# ==================== ADDONS TO HELP PROGRAMS
-def getStatus(read, total):
-    if read == 0:
-        return "Plan to Read"
-    elif read >= total:
-        return "Completed"
-
-def progressPercent(read, total):
-    return round(read / total * 100, 1)
-
+# ========================= ADDONS
 def askInt(prompt, minimum = 1):
     while True:
         try:
@@ -89,22 +81,6 @@ def searchSeries(library):
     input("\nPress Enter to continue...")
 # ==================================================
 
-# ========== SAVING AND LOADING JSON FILE
-
-def saveLibrary(library):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(library, f, indent=2, ensure_ascii=False)
-
-def loadLibrary(library):
-    try:
-        with open(DATA_FILE, encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-    except json.JSONDecodeError:
-        print("library.json is Damaged Starting empty.")
-        return []
-# ==========================================
 FORMATS = {"1": "Manga", "2": "Novel", "3": "Comic"}
 
 def main():
@@ -135,4 +111,5 @@ def main():
             print("Not a valid choice.")
         saveLibrary(library)
 
-main()
+if __name__ == "__main__":
+    main()
