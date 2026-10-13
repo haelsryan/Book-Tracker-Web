@@ -6,4 +6,6 @@ def getStatus(read, total):
     return "Reading"
 
 def progressPercent(read, total):
+    if total == 0:
+        return 0.0
     return round(read / total * 100, 1)
